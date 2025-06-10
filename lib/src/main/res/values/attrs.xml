@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <declare-styleable name="DoraRotateView">
+        <attr name="dview_rv_appName" format="string" />
+        <attr name="dview_rv_albumText" format="string" />
+        <attr name="dview_rv_appSlogan" format="string" />
+        <attr name="dview_rv_copyRight" format="string" />
+    </declare-styleable>
+</resources>
