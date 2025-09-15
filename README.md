@@ -2,6 +2,9 @@ dview-rotate-view
 ![Release](https://jitpack.io/v/dora4/dview-rotate-view.svg)
 --------------------------------
 
+#### 卡片
+![DORA视图 黑胶唱片](https://github.com/user-attachments/assets/52e61175-2dc9-44b0-8252-e8f97f94b47e)
+
 #### Gradle依赖配置
 
 ```groovy
