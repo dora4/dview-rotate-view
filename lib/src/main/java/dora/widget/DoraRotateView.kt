@@ -33,6 +33,8 @@ class DoraRotateView @JvmOverloads constructor(
     private var albumText: String = ALBUM_TEXT
     private var appSlogan: String = APP_SLOGAN
     private var copyRight: String = COPY_RIGHT
+    private var outerTextSize = ALBUM_CIRCLE_TEXT_SIZE
+    private var innerTextSize = ALBUM_CIRCLE_TEXT_SIZE_SMALL
     // Animation
     private lateinit var rotateAnimator: ObjectAnimator
     private var lastAnimationValue: Long = 0
@@ -86,10 +88,19 @@ class DoraRotateView @JvmOverloads constructor(
         val ta = context.obtainStyledAttributes(
             attrs, R.styleable.DoraRotateView, defStyleAttr, 0
         )
-        appName    = ta.getString(R.styleable.DoraRotateView_dview_rv_appName)    ?: APP_NAME
-        albumText  = ta.getString(R.styleable.DoraRotateView_dview_rv_albumText)  ?: ALBUM_TEXT
-        appSlogan  = ta.getString(R.styleable.DoraRotateView_dview_rv_appSlogan)  ?: APP_SLOGAN
-        copyRight  = ta.getString(R.styleable.DoraRotateView_dview_rv_copyRight)  ?: COPY_RIGHT
+        appName       = ta.getString(R.styleable.DoraRotateView_dview_rv_appName) ?: APP_NAME
+        albumText     = ta.getString(R.styleable.DoraRotateView_dview_rv_albumText) ?: ALBUM_TEXT
+        appSlogan     = ta.getString(R.styleable.DoraRotateView_dview_rv_appSlogan) ?: APP_SLOGAN
+        copyRight     = ta.getString(R.styleable.DoraRotateView_dview_rv_copyRight) ?: COPY_RIGHT
+        // 读取字体大小
+        outerTextSize = ta.getDimension(
+            R.styleable.DoraRotateView_dview_rv_outerTextSize,
+            ALBUM_CIRCLE_TEXT_SIZE * context.resources.displayMetrics.density
+        )
+        innerTextSize = ta.getDimension(
+            R.styleable.DoraRotateView_dview_rv_innerTextSize,
+            ALBUM_CIRCLE_TEXT_SIZE_SMALL * context.resources.displayMetrics.density
+        )
         ta.recycle()
     }
 
@@ -107,19 +118,22 @@ class DoraRotateView @JvmOverloads constructor(
         }
     }
 
-    public override fun onDraw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         paint.color = MIDDLE_RECT_COLOR
         canvas.drawOval(middleRect, paint)
+
         paint.color = INNER_RECT_COLOR
         canvas.drawOval(innerRect, paint)
-        paint.textSize = ALBUM_CIRCLE_TEXT_SIZE * density
+        // 外圈文字
+        paint.textSize = outerTextSize
         paint.color = ALBUM_CIRCLE_TEXT_COLOR
-        canvas.drawTextOnPath(ALBUM_TEXT, albumTextPath, 2 * density, 2 * density, paint)
-        paint.textSize = ALBUM_CIRCLE_TEXT_SIZE_SMALL * density
-        canvas.drawText(APP_NAME, (width / 2).toFloat(), (height / 2).toFloat(), paint)
-        canvas.drawText(APP_SLOGAN, (width / 2).toFloat(), height / 2 + 4 * density, paint)
-        canvas.drawText(COPY_RIGHT, (width / 2).toFloat(), height / 2 + 12 * density, paint)
+        canvas.drawTextOnPath(albumText, albumTextPath, 2 * density, 2 * density, paint)
+        // 中心文字
+        paint.textSize = innerTextSize
+        canvas.drawText(appName, (width / 2).toFloat(), (height / 2).toFloat(), paint)
+        canvas.drawText(appSlogan, (width / 2).toFloat(), height / 2 + 4 * density, paint)
+        canvas.drawText(copyRight, (width / 2).toFloat(), height / 2 + 12 * density, paint)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

@@ -2,9 +2,11 @@
 
 <resources>
     <declare-styleable name="DoraRotateView">
-        <attr name="dview_rv_appName" format="string" />
-        <attr name="dview_rv_albumText" format="string" />
-        <attr name="dview_rv_appSlogan" format="string" />
-        <attr name="dview_rv_copyRight" format="string" />
+        <attr name="dview_rv_appName" format="string|reference" />
+        <attr name="dview_rv_albumText" format="string|reference" />
+        <attr name="dview_rv_appSlogan" format="string|reference" />
+        <attr name="dview_rv_copyRight" format="string|reference" />
+        <attr name="dview_rv_outerTextSize" format="dimension|reference"/>
+        <attr name="dview_rv_innerTextSize" format="dimension|reference"/>
     </declare-styleable>
 </resources>
