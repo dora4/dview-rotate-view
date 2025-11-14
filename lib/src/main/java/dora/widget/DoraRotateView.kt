@@ -29,12 +29,17 @@ class DoraRotateView @JvmOverloads constructor(
     private var albumPathRect = RectF()
     private var albumTextPath = Path()
     private var density = 0f
-    private var appName: String = APP_NAME
-    private var albumText: String = ALBUM_TEXT
-    private var appSlogan: String = APP_SLOGAN
-    private var copyRight: String = COPY_RIGHT
+
+    // -------------------------
+    // Attributes
+    // -------------------------
+    private var appName: String = "APP_NAME"
+    private var albumText: String = "ALBUM_TEXT"
+    private var appSlogan: String = "APP_SLOGAN"
+    private var copyRight: String = "COPY_RIGHT"
     private var outerTextSize = ALBUM_CIRCLE_TEXT_SIZE
     private var innerTextSize = ALBUM_CIRCLE_TEXT_SIZE_SMALL
+
     // Animation
     private lateinit var rotateAnimator: ObjectAnimator
     private var lastAnimationValue: Long = 0
@@ -48,9 +53,11 @@ class DoraRotateView @JvmOverloads constructor(
                      defStyleAttr: Int = 0) {
         initAttrs(context, attrs, defStyleAttr)
         density = context.resources.displayMetrics.density
+
         val shadowXOffset = (density * X_OFFSET).toInt()
         val shadowYOffset = (density * Y_OFFSET).toInt()
         shadowRadius = (density * SHADOW_RADIUS).toInt()
+
         val circle: ShapeDrawable
         if (elevationSupported()) {
             circle = ShapeDrawable(OvalShape())
@@ -66,17 +73,20 @@ class DoraRotateView @JvmOverloads constructor(
                 KEY_SHADOW_COLOR
             )
             val padding = shadowRadius
-            // set padding so the inner image sits correctly within the shadow.
             setPadding(padding, padding, padding, padding)
         }
+
         circle.paint.isAntiAlias = true
         circle.paint.color = DEFAULT_ALBUM_COLOR
         background = circle
+
         paint.isAntiAlias = true
         paint.textAlign = Paint.Align.CENTER
         paint.style = Paint.Style.FILL
         paint.color = DEFAULT_ALBUM_COLOR
         paint.textSize = ALBUM_CIRCLE_TEXT_SIZE * density
+
+        // Rotate animation
         rotateAnimator = ObjectAnimator.ofFloat(this, "rotation", 0f, 360f)
         rotateAnimator.duration = 10000
         rotateAnimator.interpolator = LinearInterpolator()
@@ -88,11 +98,11 @@ class DoraRotateView @JvmOverloads constructor(
         val ta = context.obtainStyledAttributes(
             attrs, R.styleable.DoraRotateView, defStyleAttr, 0
         )
-        appName       = ta.getString(R.styleable.DoraRotateView_dview_rv_appName) ?: APP_NAME
-        albumText     = ta.getString(R.styleable.DoraRotateView_dview_rv_albumText) ?: ALBUM_TEXT
-        appSlogan     = ta.getString(R.styleable.DoraRotateView_dview_rv_appSlogan) ?: APP_SLOGAN
-        copyRight     = ta.getString(R.styleable.DoraRotateView_dview_rv_copyRight) ?: COPY_RIGHT
-        // 读取字体大小
+        appName       = ta.getString(R.styleable.DoraRotateView_dview_rv_appName) ?: appName
+        albumText     = ta.getString(R.styleable.DoraRotateView_dview_rv_albumText) ?: albumText
+        appSlogan     = ta.getString(R.styleable.DoraRotateView_dview_rv_appSlogan) ?: appSlogan
+        copyRight     = ta.getString(R.styleable.DoraRotateView_dview_rv_copyRight) ?: copyRight
+
         outerTextSize = ta.getDimension(
             R.styleable.DoraRotateView_dview_rv_outerTextSize,
             ALBUM_CIRCLE_TEXT_SIZE * context.resources.displayMetrics.density
@@ -120,37 +130,47 @@ class DoraRotateView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
         paint.color = MIDDLE_RECT_COLOR
         canvas.drawOval(middleRect, paint)
 
         paint.color = INNER_RECT_COLOR
         canvas.drawOval(innerRect, paint)
-        // 外圈文字
+
+        // Outer text (albumText)
         paint.textSize = outerTextSize
         paint.color = ALBUM_CIRCLE_TEXT_COLOR
         canvas.drawTextOnPath(albumText, albumTextPath, 2 * density, 2 * density, paint)
-        // 中心文字
+
+        // Center text
         paint.textSize = innerTextSize
-        canvas.drawText(appName, (width / 2).toFloat(), (height / 2).toFloat(), paint)
-        canvas.drawText(appSlogan, (width / 2).toFloat(), height / 2 + 4 * density, paint)
-        canvas.drawText(copyRight, (width / 2).toFloat(), height / 2 + 12 * density, paint)
+        canvas.drawText(appName, width / 2f, height / 2f, paint)
+        canvas.drawText(appSlogan, width / 2f, height / 2f + 4 * density, paint)
+        canvas.drawText(copyRight, width / 2f, height / 2f + 12 * density, paint)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+
         val middleRectSize = density * MIDDLE_RECT_SIZE
         val innerRectSize = density * INNER_RECT_SIZE
         val albumRectSize = density * ALBUM_TEXT_PATH_RECT_SIZE
+
         middleRect[0f, 0f, middleRectSize] = middleRectSize
         innerRect[0f, 0f, innerRectSize] = innerRectSize
         albumPathRect[0f, 0f, albumRectSize] = albumRectSize
+
         middleRect.offset(w / 2 - middleRectSize / 2, h / 2 - middleRectSize / 2)
         innerRect.offset(w / 2 - innerRectSize / 2, h / 2 - innerRectSize / 2)
         albumPathRect.offset(w / 2 - albumRectSize / 2, h / 2 - albumRectSize / 2)
+
+        albumTextPath.reset()
         albumTextPath.addOval(albumPathRect, Path.Direction.CW)
     }
 
+    // -------------------------
     // Animation
+    // -------------------------
     fun startRotateAnimation() {
         rotateAnimator.cancel()
         rotateAnimator.start()
@@ -176,9 +196,44 @@ class DoraRotateView @JvmOverloads constructor(
         rotateAnimator.cancel()
     }
 
-    /**
-     * Draw oval shadow below ImageView under lollipop.
-     */
+    // -------------------------
+    // Support Code Setters
+    // -------------------------
+    fun setAppName(name: String) {
+        appName = name
+        invalidate()
+    }
+
+    fun setAlbumText(text: String) {
+        albumText = text
+        albumTextPath.reset()
+        albumTextPath.addOval(albumPathRect, Path.Direction.CW)
+        invalidate()
+    }
+
+    fun setAppSlogan(slogan: String) {
+        appSlogan = slogan
+        invalidate()
+    }
+
+    fun setCopyRight(text: String) {
+        copyRight = text
+        invalidate()
+    }
+
+    fun setOuterTextSize(px: Float) {
+        outerTextSize = px
+        invalidate()
+    }
+
+    fun setInnerTextSize(px: Float) {
+        innerTextSize = px
+        invalidate()
+    }
+
+    // -------------------------
+    // Oval shadow for pre-L devices
+    // -------------------------
     private inner class OvalShadow(shadowRadius: Int) : OvalShape() {
 
         private var radialGradient: RadialGradient? = null
@@ -198,15 +253,15 @@ class DoraRotateView @JvmOverloads constructor(
             val viewWidth = this@DoraRotateView.width
             val viewHeight = this@DoraRotateView.height
             canvas.drawCircle(
-                (viewWidth / 2).toFloat(),
-                (viewHeight / 2).toFloat(),
-                (viewWidth / 2).toFloat(),
+                viewWidth / 2f,
+                viewHeight / 2f,
+                viewWidth / 2f,
                 shadowPaint
             )
             canvas.drawCircle(
-                (viewWidth / 2).toFloat(),
-                (viewHeight / 2).toFloat(),
-                (viewWidth / 2 - shadowRadius).toFloat(),
+                viewWidth / 2f,
+                viewHeight / 2f,
+                viewWidth / 2f - shadowRadius,
                 paint
             )
         }
@@ -237,10 +292,5 @@ class DoraRotateView @JvmOverloads constructor(
         private const val MIDDLE_RECT_SIZE = 80
         private const val INNER_RECT_SIZE = 64
         private const val ALBUM_TEXT_PATH_RECT_SIZE = 56
-
-        const val APP_NAME = "Dora Music"
-        const val ALBUM_TEXT = "仅用于学习交流，禁止用于包括但不仅限于商业用途，本产品由https://dorachat.com赞助"
-        const val APP_SLOGAN = "版权所有，侵权必究"
-        val COPY_RIGHT = "doramusic ©2023~${Calendar.getInstance().get(Calendar.YEAR)}"
     }
 }
