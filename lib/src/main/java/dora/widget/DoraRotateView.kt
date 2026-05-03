@@ -226,6 +226,7 @@ class DoraRotateView @JvmOverloads constructor(
 
     fun setTextColor(@ColorInt color: Int) {
         albumTextColor = color
+        paint.color = color
         invalidate()
     }
 
