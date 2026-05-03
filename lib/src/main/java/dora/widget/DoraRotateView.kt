@@ -207,6 +207,28 @@ class DoraRotateView @JvmOverloads constructor(
         invalidate()
     }
 
+    fun setAppName(name: String) {
+        appName = name
+        invalidate()
+    }
+
+    fun setAlbumText(text: String) {
+        albumText = text
+        albumTextPath.reset()
+        albumTextPath.addOval(albumPathRect, Path.Direction.CW)
+        invalidate()
+    }
+
+    fun setAppSlogan(slogan: String) {
+        appSlogan = slogan
+        invalidate()
+    }
+
+    fun setCopyRight(text: String) {
+        copyRight = text
+        invalidate()
+    }
+
     private fun getColor(resId: Int): Int {
         return ContextCompat.getColor(context, resId)
     }
