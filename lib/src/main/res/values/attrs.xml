@@ -6,6 +6,7 @@
         <attr name="dview_rv_albumText" format="string|reference" />
         <attr name="dview_rv_appSlogan" format="string|reference" />
         <attr name="dview_rv_copyRight" format="string|reference" />
+        <attr name="dview_rv_textColor" format="color|reference" />
         <attr name="dview_rv_outerTextSize" format="dimension|reference"/>
         <attr name="dview_rv_innerTextSize" format="dimension|reference"/>
     </declare-styleable>

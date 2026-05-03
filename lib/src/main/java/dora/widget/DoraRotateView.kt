@@ -10,6 +10,7 @@ import android.content.Context
 import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
+import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
 import dora.widget.rotateview.R
@@ -37,6 +38,7 @@ class DoraRotateView @JvmOverloads constructor(
     private var albumText: String = "ALBUM_TEXT"
     private var appSlogan: String = "APP_SLOGAN"
     private var copyRight: String = "COPY_RIGHT"
+    private var albumTextColor: Int = DEFAULT_ALBUM_COLOR
     private var outerTextSize = ALBUM_CIRCLE_TEXT_SIZE
     private var innerTextSize = ALBUM_CIRCLE_TEXT_SIZE_SMALL
 
@@ -77,13 +79,13 @@ class DoraRotateView @JvmOverloads constructor(
         }
 
         circle.paint.isAntiAlias = true
-        circle.paint.color = DEFAULT_ALBUM_COLOR
+        circle.paint.color = albumTextColor
         background = circle
 
         paint.isAntiAlias = true
         paint.textAlign = Paint.Align.CENTER
         paint.style = Paint.Style.FILL
-        paint.color = DEFAULT_ALBUM_COLOR
+        paint.color = albumTextColor
         paint.textSize = ALBUM_CIRCLE_TEXT_SIZE * density
 
         // Rotate animation
@@ -102,6 +104,7 @@ class DoraRotateView @JvmOverloads constructor(
         albumText     = ta.getString(R.styleable.DoraRotateView_dview_rv_albumText) ?: albumText
         appSlogan     = ta.getString(R.styleable.DoraRotateView_dview_rv_appSlogan) ?: appSlogan
         copyRight     = ta.getString(R.styleable.DoraRotateView_dview_rv_copyRight) ?: copyRight
+        albumTextColor     = ta.getColor(R.styleable.DoraRotateView_dview_rv_textColor, albumTextColor)
 
         outerTextSize = ta.getDimension(
             R.styleable.DoraRotateView_dview_rv_outerTextSize,
@@ -218,6 +221,11 @@ class DoraRotateView @JvmOverloads constructor(
 
     fun setCopyRight(text: String) {
         copyRight = text
+        invalidate()
+    }
+
+    fun setTextColor(@ColorInt color: Int) {
+        albumTextColor = color
         invalidate()
     }
 
