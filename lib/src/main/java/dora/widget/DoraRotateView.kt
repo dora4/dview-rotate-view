@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
-import android.os.Build
 import android.util.AttributeSet
 import android.view.animation.LinearInterpolator
 import androidx.annotation.ColorInt
@@ -14,6 +13,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import dora.widget.rotateview.R
+import androidx.core.content.withStyledAttributes
 
 class DoraRotateView @JvmOverloads constructor(
     context: Context,
@@ -68,52 +68,40 @@ class DoraRotateView @JvmOverloads constructor(
     // 初始化属性
     // -------------------------
     private fun initAttrs(context: Context, attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.DoraRotateView)
-
-        appName = ta.getString(R.styleable.DoraRotateView_dview_rv_appName) ?: appName
-        albumText = ta.getString(R.styleable.DoraRotateView_dview_rv_albumText) ?: albumText
-        appSlogan = ta.getString(R.styleable.DoraRotateView_dview_rv_appSlogan) ?: appSlogan
-        copyRight = ta.getString(R.styleable.DoraRotateView_dview_rv_copyRight) ?: copyRight
-
-        textColor = ta.getColor(
-            R.styleable.DoraRotateView_dview_rv_textColor,
-            textColor
-        )
-
-        outerTextSize = ta.getDimension(
-            R.styleable.DoraRotateView_dview_rv_outerTextSize,
-            outerTextSize
-        )
-
-        innerTextSize = ta.getDimension(
-            R.styleable.DoraRotateView_dview_rv_innerTextSize,
-            innerTextSize
-        )
-
-        ta.recycle()
+        context.withStyledAttributes(attrs, R.styleable.DoraRotateView) {
+            appName = getString(R.styleable.DoraRotateView_dview_rv_appName) ?: appName
+            albumText = getString(R.styleable.DoraRotateView_dview_rv_albumText) ?: albumText
+            appSlogan = getString(R.styleable.DoraRotateView_dview_rv_appSlogan) ?: appSlogan
+            copyRight = getString(R.styleable.DoraRotateView_dview_rv_copyRight) ?: copyRight
+            textColor = getColor(
+                R.styleable.DoraRotateView_dview_rv_textColor,
+                textColor
+            )
+            middleColor = getColor(
+                R.styleable.DoraRotateView_dview_rv_middleColor,
+                middleColor
+            )
+            innerColor = getColor(
+                R.styleable.DoraRotateView_dview_rv_innerColor,
+                innerColor
+            )
+            outerTextSize = getDimension(
+                R.styleable.DoraRotateView_dview_rv_outerTextSize,
+                outerTextSize
+            )
+            innerTextSize = getDimension(
+                R.styleable.DoraRotateView_dview_rv_innerTextSize,
+                innerTextSize
+            )
+        }
     }
 
     // -------------------------
     // 阴影背景
     // -------------------------
     private fun initShadowBackground() {
-        val circle: ShapeDrawable
-
-        if (Build.VERSION.SDK_INT >= 21) {
-            circle = ShapeDrawable(OvalShape())
-            ViewCompat.setElevation(this, 16 * density)
-        } else {
-            val oval = OvalShadow((24 * density).toInt())
-            circle = ShapeDrawable(oval)
-            ViewCompat.setLayerType(this, LAYER_TYPE_SOFTWARE, circle.paint)
-            circle.paint.setShadowLayer(
-                shadowRadius.toFloat(),
-                0f,
-                1.75f * density,
-                0x1E000000
-            )
-        }
-
+        val circle = ShapeDrawable(OvalShape())
+        ViewCompat.setElevation(this, 16 * density)
         circle.paint.color = textColor
         background = circle
     }
@@ -246,7 +234,6 @@ class DoraRotateView @JvmOverloads constructor(
         override fun draw(canvas: Canvas, paint: Paint) {
             val cx = width / 2f
             val cy = height / 2f
-
             shadowPaint.shader = RadialGradient(
                 cx, cy,
                 shadowRadius.toFloat(),
@@ -254,7 +241,6 @@ class DoraRotateView @JvmOverloads constructor(
                 null,
                 Shader.TileMode.CLAMP
             )
-
             canvas.drawCircle(cx, cy, cx, shadowPaint)
             canvas.drawCircle(cx, cy, cx - shadowRadius, paint)
         }

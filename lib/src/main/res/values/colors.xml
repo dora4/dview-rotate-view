@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <color name="dview_text_color">#43454A</color>
-    <color name="dview_middle_color">#B38E74</color>
-    <color name="dview_inner_color">#80D8D8D8</color>
+    <color name="dview_text_color">#FF9CBDCC</color>
+    <color name="dview_middle_color">#FF4C718C</color>
+    <color name="dview_inner_color">#4FD8D8D8</color>
 </resources>
