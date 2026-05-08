@@ -2,6 +2,4 @@
 
 <resources>
     <color name="dview_text_color">#FFBFDFFF</color>
-    <color name="dview_middle_color">#FF3A5A73</color>
-    <color name="dview_inner_color">#33AFC8D8</color>
 </resources>
