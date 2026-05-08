@@ -100,11 +100,33 @@ class DoraRotateView @JvmOverloads constructor(
     // 阴影背景
     // -------------------------
     private fun initShadowBackground() {
-        val circle = ShapeDrawable(OvalShadow((8 * density).toInt()))
+        shadowRadius = (8 * density).toInt()
+    
+        val circle = ShapeDrawable(OvalShadow(shadowRadius))
+        circle.paint.isAntiAlias = true
         circle.paint.color = textColor
+    
         circleDrawable = circle
-
+    
         ViewCompat.setElevation(this, 16 * density)
+    
+        // pre-L 阴影兼容
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+            ViewCompat.setLayerType(this, LAYER_TYPE_SOFTWARE, circle.paint)
+            circle.paint.setShadowLayer(
+                shadowRadius.toFloat(),
+                0f,
+                2 * density,
+                0x1E000000
+            )
+            setPadding(
+                shadowRadius,
+                shadowRadius,
+                shadowRadius,
+                shadowRadius
+            )
+        }
+    
         background = circle
     }
 
@@ -139,6 +161,7 @@ class DoraRotateView @JvmOverloads constructor(
     // 尺寸变化
     // -------------------------
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
         val middleSize = 80 * density
         val innerSize = 64 * density
         val pathSize = 56 * density
@@ -184,6 +207,7 @@ class DoraRotateView @JvmOverloads constructor(
 
     fun setTextColor(@ColorInt color: Int) {
         textColor = color
+        paint.color = color
         circleDrawable?.paint?.color = color
         invalidate()
     }
@@ -237,15 +261,19 @@ class DoraRotateView @JvmOverloads constructor(
         override fun draw(canvas: Canvas, paint: Paint) {
             val cx = width / 2f
             val cy = height / 2f
+            val radius = cx
+        
             shadowPaint.shader = RadialGradient(
-                cx, cy,
-                shadowRadius.toFloat(),
+                cx,
+                cy,
+                radius,
                 intArrayOf(0x3D000000, Color.TRANSPARENT),
-                null,
+                floatArrayOf(0.7f, 1f),
                 Shader.TileMode.CLAMP
             )
-            canvas.drawCircle(cx, cy, cx, shadowPaint)
-            canvas.drawCircle(cx, cy, cx - shadowRadius, paint)
+        
+            canvas.drawCircle(cx, cy, radius, shadowPaint)
+            canvas.drawCircle(cx, cy, radius - shadowRadius, paint)
         }
     }
 }
