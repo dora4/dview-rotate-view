@@ -100,9 +100,7 @@ class DoraRotateView @JvmOverloads constructor(
     // 阴影背景
     // -------------------------
     private fun initShadowBackground() {
-        shadowRadius = (8 * density).toInt()
-    
-        val circle = ShapeDrawable(OvalShadow(shadowRadius))
+        val circle = ShapeDrawable(OvalShape())
         circle.paint.isAntiAlias = true
         circle.paint.color = textColor
     
