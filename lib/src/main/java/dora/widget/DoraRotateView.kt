@@ -23,7 +23,7 @@ class DoraRotateView @JvmOverloads constructor(
 
     private var density = resources.displayMetrics.density
     private var shadowRadius = 0
-
+    private var circleDrawable: ShapeDrawable? = null
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val middleRect = RectF()
     private val innerRect = RectF()
@@ -100,9 +100,11 @@ class DoraRotateView @JvmOverloads constructor(
     // 阴影背景
     // -------------------------
     private fun initShadowBackground() {
-        val circle = ShapeDrawable(OvalShadow(1))
-        ViewCompat.setElevation(this, 16 * density)
+        val circle = ShapeDrawable(OvalShadow((8 * density).toInt()))
         circle.paint.color = textColor
+        circleDrawable = circle
+
+        ViewCompat.setElevation(this, 16 * density)
         background = circle
     }
 
@@ -182,6 +184,7 @@ class DoraRotateView @JvmOverloads constructor(
 
     fun setTextColor(@ColorInt color: Int) {
         textColor = color
+        circleDrawable?.paint?.color = color
         invalidate()
     }
 
