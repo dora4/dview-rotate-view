@@ -100,7 +100,7 @@ class DoraRotateView @JvmOverloads constructor(
     // 阴影背景
     // -------------------------
     private fun initShadowBackground() {
-        val circle = ShapeDrawable(OvalShape())
+        val circle = ShapeDrawable(OvalShadow(1))
         ViewCompat.setElevation(this, 16 * density)
         circle.paint.color = textColor
         background = circle
