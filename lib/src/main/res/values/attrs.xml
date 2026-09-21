@@ -11,6 +11,6 @@
         <attr name="dview_rv_innerTextSize" format="dimension|reference"/>
         <attr name="dview_rv_innerCircleRadius" format="float"/>
         <attr name="dview_rv_outerCircleRadius" format="float"/>
-        <attr name="dview_rv_outerTextCircleRadius" format="float"/>
+        <attr name="dview_rv_albumTextCircleRadius" format="float"/>
     </declare-styleable>
 </resources>
