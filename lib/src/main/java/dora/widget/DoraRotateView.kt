@@ -365,8 +365,8 @@ class DoraRotateView @JvmOverloads constructor(
         private const val ALBUM_CIRCLE_TEXT_COLOR = 0xFF634234.toInt()
         private const val ALBUM_CIRCLE_TEXT_SIZE_SP = 14f
         private const val ALBUM_CIRCLE_TEXT_SIZE_SMALL_SP = 12f
-        private const val MIDDLE_RECT_SIZE = 80f
-        private const val INNER_RECT_SIZE = 64f
+        private const val MIDDLE_RECT_SIZE = 160f
+        private const val INNER_RECT_SIZE = 128f
         private const val ALBUM_TEXT_PATH_RECT_SIZE = 56f
 
         private const val DEFAULT_INNER_CIRCLE_RADIUS = 64
