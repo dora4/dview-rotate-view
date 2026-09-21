@@ -9,5 +9,7 @@
         <attr name="dview_rv_textColor" format="color|reference" />
         <attr name="dview_rv_outerTextSize" format="dimension|reference"/>
         <attr name="dview_rv_innerTextSize" format="dimension|reference"/>
+        <attr name="dview_rv_innerCircleRadius" format="float"/>
+        <attr name="dview_rv_outerTextCircleRadius" format="float"/>
     </declare-styleable>
 </resources>
