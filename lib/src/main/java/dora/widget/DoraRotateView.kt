@@ -42,7 +42,7 @@ class DoraRotateView @JvmOverloads constructor(
     private var appName: String = "APP_NAME"
     private var albumText: String = "ALBUM_TEXT"
     private var appSlogan: String = "APP_SLOGAN"
-    private var copyRight: String = "COPY_RIGHT"
+    private var copyright: String = "COPYRIGHT"
     private var textColor: Int = DEFAULT_TEXT_COLOR
     private var outerTextColor: Int = DEFAULT_TEXT_COLOR
     private var outerTextSize: Int = sp2px(ALBUM_CIRCLE_TEXT_SIZE_SP)
@@ -52,8 +52,8 @@ class DoraRotateView @JvmOverloads constructor(
     private var outerCircleRadius: Int = dp2px(DEFAULT_OUTER_CIRCLE_RADIUS_DP)
     private var albumTextCircleRadius: Int = dp2px(DEFAULT_ALBUM_TEXT_CIRCLE_RADIUS_DP)
     private var appNameTextYOffset: Int = dp2px(APP_NAME_TEXT_Y_OFFSET)
-    private var sloganTextYOffset: Int = dp2px(SLOGAN_TEXT_Y_OFFSET)
-    private var copyRightTextYOffset: Int = dp2px(COPYRIGHT_TEXT_Y_OFFSET)
+    private var appSloganTextYOffset: Int = dp2px(APP_SLOGAN_TEXT_Y_OFFSET)
+    private var copyrightTextYOffset: Int = dp2px(COPYRIGHT_TEXT_Y_OFFSET)
 
     // Animation
     private lateinit var rotateAnimator: ObjectAnimator
@@ -117,7 +117,7 @@ class DoraRotateView @JvmOverloads constructor(
             appName = getString(R.styleable.DoraRotateView_dview_rv_appName) ?: appName
             albumText = getString(R.styleable.DoraRotateView_dview_rv_albumText) ?: albumText
             appSlogan = getString(R.styleable.DoraRotateView_dview_rv_appSlogan) ?: appSlogan
-            copyRight = getString(R.styleable.DoraRotateView_dview_rv_copyRight) ?: copyRight
+            copyright = getString(R.styleable.DoraRotateView_dview_rv_copyRight) ?: copyright
             textColor = getColor(R.styleable.DoraRotateView_dview_rv_textColor, textColor)
 
             outerTextSize = getDimension(
@@ -132,8 +132,8 @@ class DoraRotateView @JvmOverloads constructor(
             outerCircleRadius = getDimensionPixelOffset(R.styleable.DoraRotateView_dview_rv_outerCircleRadius, outerCircleRadius)
             albumTextCircleRadius = getDimensionPixelOffset(R.styleable.DoraRotateView_dview_rv_albumTextCircleRadius, albumTextCircleRadius)
             appNameTextYOffset = getDimensionPixelOffset(R.styleable.DoraRotateView_dview_rv_appNameTextYOffset, appNameTextYOffset)
-            sloganTextYOffset = getDimensionPixelOffset(R.styleable.DoraRotateView_dview_rv_sloganTextYOffset, sloganTextYOffset)
-            copyRightTextYOffset = getDimensionPixelOffset(R.styleable.DoraRotateView_dview_rv_copyRightTextYOffset, copyRightTextYOffset)
+            appSloganTextYOffset = getDimensionPixelOffset(R.styleable.DoraRotateView_dview_rv_sloganTextYOffset, appSloganTextYOffset)
+            copyrightTextYOffset = getDimensionPixelOffset(R.styleable.DoraRotateView_dview_rv_copyRightTextYOffset, copyrightTextYOffset)
         }
     }
 
@@ -188,8 +188,8 @@ class DoraRotateView @JvmOverloads constructor(
         paint.textSize = px2sp(innerTextSize)
         val centerY = height / 2f
         canvas.drawText(appName, width / 2f, centerY + appNameTextYOffset, paint)
-        canvas.drawText(appSlogan, width / 2f, centerY + sloganTextYOffset, paint)
-        canvas.drawText(copyRight, width / 2f, centerY + copyRightTextYOffset, paint)
+        canvas.drawText(appSlogan, width / 2f, centerY + appSloganTextYOffset, paint)
+        canvas.drawText(copyright, width / 2f, centerY + copyrightTextYOffset, paint)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -256,8 +256,8 @@ class DoraRotateView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun setCopyRight(text: String) {
-        copyRight = text
+    fun setCopyright(text: String) {
+        copyright = text
         invalidate()
     }
 
@@ -307,13 +307,13 @@ class DoraRotateView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun setSloganTextYOffset(offset: Int) {
-        sloganTextYOffset = offset
+    fun setAppSloganTextYOffset(offset: Int) {
+        appSloganTextYOffset = offset
         invalidate()
     }
 
-    fun setCopyRightTextYOffset(offset: Int) {
-        copyRightTextYOffset = offset
+    fun setCopyrightTextYOffset(offset: Int) {
+        copyrightTextYOffset = offset
         invalidate()
     }
 
@@ -337,13 +337,13 @@ class DoraRotateView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun setSloganTextYOffsetInDp(offset: Float) {
-        sloganTextYOffset = dp2px(offset)
+    fun setAppSloganTextYOffsetInDp(offset: Float) {
+        appSloganTextYOffset = dp2px(offset)
         invalidate()
     }
 
-    fun setCopyRightTextYOffsetInDp(offset: Float) {
-        copyRightTextYOffset = dp2px(offset)
+    fun setCopyrightTextYOffsetInDp(offset: Float) {
+        copyrightTextYOffset = dp2px(offset)
         invalidate()
     }
 
@@ -405,9 +405,9 @@ class DoraRotateView @JvmOverloads constructor(
 
         private const val APP_NAME_TEXT_Y_OFFSET = -4f
 
-        private const val SLOGAN_TEXT_Y_OFFSET = 4f
+        private const val APP_SLOGAN_TEXT_Y_OFFSET = 4f
 
-        private const val COPYRIGHT_TEXT_Y_OFFSET = 8f
+        private const val COPYRIGHT_TEXT_Y_OFFSET = 12f
 
         private const val ALBUM_CIRCLE_TEXT_COLOR = 0xFF634234.toInt()
         private const val ALBUM_CIRCLE_TEXT_SIZE_SP = 14f
