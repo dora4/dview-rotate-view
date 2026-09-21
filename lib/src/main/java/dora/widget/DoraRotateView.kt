@@ -22,14 +22,12 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.ViewCompat
 import dora.widget.rotateview.R
 
-
 class DoraRotateView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : AppCompatImageView(
-    context, attrs, defStyleAttr
-) {
+) : AppCompatImageView(context, attrs, defStyleAttr) {
+
     private var shadowRadius = 0
     private var paint = Paint()
     private var middleRect = RectF()
@@ -51,6 +49,7 @@ class DoraRotateView @JvmOverloads constructor(
     private var innerTextSize: Int = sp2px(ALBUM_CIRCLE_TEXT_SIZE_SMALL_SP)
 
     private var innerCircleRadius: Int = DEFAULT_INNER_CIRCLE_RADIUS
+    private var outerCircleRadius: Int = DEFAULT_OUTER_CIRCLE_RADIUS
     private var outerTextCircleRadius: Int = DEFAULT_OUTER_TEXT_CIRCLE_RADIUS
 
     // Animation
@@ -127,6 +126,7 @@ class DoraRotateView @JvmOverloads constructor(
                 innerTextSize.toFloat()
             ).toInt()
             innerCircleRadius = getDimensionPixelOffset(R.styleable.DoraRotateView_dview_rv_innerCircleRadius, innerCircleRadius)
+            outerCircleRadius = getDimensionPixelOffset(R.styleable.DoraRotateView_dview_rv_outerCircleRadius, outerCircleRadius)
             outerTextCircleRadius = getDimensionPixelOffset(R.styleable.DoraRotateView_dview_rv_outerTextCircleRadius, outerTextCircleRadius)
         }
     }
@@ -180,25 +180,27 @@ class DoraRotateView @JvmOverloads constructor(
 
         // Center text
         paint.textSize = px2sp(innerTextSize)
-        canvas.drawText(appName, width / 2f, height / 2f, paint)
-        canvas.drawText(appSlogan, width / 2f, height / 2f + 4 * density, paint)
-        canvas.drawText(copyRight, width / 2f, height / 2f + 12 * density, paint)
+        val centerY = height / 2f
+        canvas.drawText(appName, width / 2f, centerY, paint)
+        canvas.drawText(appSlogan, width / 2f, centerY + 4 * density, paint)
+        canvas.drawText(copyRight, width / 2f, centerY + 12 * density, paint)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+        val cx = w / 2f
+        val cy = h / 2f
 
-        val middleSize = MIDDLE_RECT_SIZE
-        val innerSize = INNER_RECT_SIZE
-        val albumSize = ALBUM_TEXT_PATH_RECT_SIZE
+        val middleR = outerCircleRadius.toFloat()
+        middleRect.set(cx - middleR, cy - middleR, cx + middleR, cy + middleR)
 
-        middleRect.set(0f, 0f, middleSize, middleSize)
-        innerRect.set(0f, 0f, innerSize, innerSize)
-        albumPathRect.set(0f, 0f, albumSize, albumSize)
+        // inner 内圆半径 = innerCircleRadius
+        val innerR = innerCircleRadius.toFloat()
+        innerRect.set(cx - innerR, cy - innerR, cx + innerR, cy + innerR)
 
-        middleRect.offset(w / 2 - middleSize / 2, h / 2 - middleSize / 2)
-        innerRect.offset(w / 2 - innerSize / 2, h / 2 - innerSize / 2)
-        albumPathRect.offset(w / 2 - albumSize / 2, h / 2 - albumSize / 2)
+        // 环绕文字椭圆路径，和外圈文字半径保持一致
+        val albumR = outerTextCircleRadius.toFloat()
+        albumPathRect.set(cx - albumR, cy - albumR, cx + albumR, cy + albumR)
 
         albumTextPath.reset()
         albumTextPath.addOval(albumPathRect, Path.Direction.CW)
@@ -242,8 +244,6 @@ class DoraRotateView @JvmOverloads constructor(
 
     fun setAlbumText(text: String) {
         albumText = text
-        albumTextPath.reset()
-        albumTextPath.addOval(albumPathRect, Path.Direction.CW)
         invalidate()
     }
 
@@ -285,25 +285,31 @@ class DoraRotateView @JvmOverloads constructor(
 
     fun setInnerCircleRadius(radius: Int) {
         innerCircleRadius = radius
-        requestLayout()
+        invalidate()
+    }
+
+    fun setOuterCircleRadius(radius: Int) {
+        outerCircleRadius = radius
         invalidate()
     }
 
     fun setOuterTextCircleRadius(radius: Int) {
         outerTextCircleRadius = radius
-        requestLayout()
         invalidate()
     }
 
     fun setInnerCircleRadiusInDp(radius: Float) {
         innerCircleRadius = dp2px(radius)
-        requestLayout()
+        invalidate()
+    }
+
+    fun setOuterCircleRadiusInDp(radius: Float) {
+        outerCircleRadius = dp2px(radius)
         invalidate()
     }
 
     fun setOuterTextCircleRadiusInDp(radius: Float) {
         outerTextCircleRadius = dp2px(radius)
-        requestLayout()
         invalidate()
     }
 
@@ -365,11 +371,10 @@ class DoraRotateView @JvmOverloads constructor(
         private const val ALBUM_CIRCLE_TEXT_COLOR = 0xFF634234.toInt()
         private const val ALBUM_CIRCLE_TEXT_SIZE_SP = 14f
         private const val ALBUM_CIRCLE_TEXT_SIZE_SMALL_SP = 12f
-        private const val MIDDLE_RECT_SIZE = 160f
-        private const val INNER_RECT_SIZE = 128f
-        private const val ALBUM_TEXT_PATH_RECT_SIZE = 56f
 
         private const val DEFAULT_INNER_CIRCLE_RADIUS = 64
-        private const val DEFAULT_OUTER_TEXT_CIRCLE_RADIUS = 80
+
+        private const val DEFAULT_OUTER_CIRCLE_RADIUS = 80
+        private const val DEFAULT_OUTER_TEXT_CIRCLE_RADIUS = 72
     }
 }
