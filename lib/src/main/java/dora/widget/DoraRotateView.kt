@@ -181,7 +181,7 @@ class DoraRotateView @JvmOverloads constructor(
         // Center text
         paint.textSize = px2sp(innerTextSize)
         val centerY = height / 2f
-        canvas.drawText(appName, width / 2f, centerY, paint)
+        canvas.drawText(appName, width / 2f, centerY - 4 * density, paint)
         canvas.drawText(appSlogan, width / 2f, centerY + 4 * density, paint)
         canvas.drawText(copyRight, width / 2f, centerY + 12 * density, paint)
     }
@@ -370,9 +370,9 @@ class DoraRotateView @JvmOverloads constructor(
         private const val ALBUM_CIRCLE_TEXT_SIZE_SP = 14f
         private const val ALBUM_CIRCLE_TEXT_SIZE_SMALL_SP = 12f
 
-        private const val DEFAULT_INNER_CIRCLE_RADIUS_DP = 32f
+        private const val DEFAULT_INNER_CIRCLE_RADIUS_DP = 36f
 
-        private const val DEFAULT_OUTER_CIRCLE_RADIUS_DP = 40f
-        private const val DEFAULT_ALBUM_TEXT_CIRCLE_RADIUS_DP = 28f
+        private const val DEFAULT_OUTER_CIRCLE_RADIUS_DP = 44f
+        private const val DEFAULT_ALBUM_TEXT_CIRCLE_RADIUS_DP = 32f
     }
 }
